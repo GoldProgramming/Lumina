@@ -1,11 +1,11 @@
 [
 	{
-		"name": "config",
-		"type": "configuration", // configuration settings
+		"name": "config", // configuration settings
+		"type": "configuration",
 		"modified": true
 	},
 	{
-		"name": "includes",
+		"name": "includes", // include section - import additional setting files
 		"type": "configuration",
 		"include": [
 			"./*.json" // include JSON from any files that match
@@ -13,19 +13,18 @@
 								 // any src/*.json files will be matched
 	},
 	{
-		"name": "example1", // Program name for interface
-		"type": "program", // 'program'-types spawn a cqueues thread for separate execution
-		"directory": "./example", // Directory to chdir into before starting program
+		"name": "five", // Program name for interface
+		"type": "coroutine", // 'coroutine'-types are wrap()ped without adding another thread
+		"directory": "./five", // current directory if you want
+		"file": null,
 		"arguments": [
-			// arguments to be passed to the program
+			"--target-directory ./" // arguments to be passed to the program
 		]
 	},
 	{
-		"name": "example2", // Program name for interface
-		"type": "coroutine", // 'coroutine'-types are :wrap()ped without adding another thread
-		"directory": ".", // current directory if you want
-		"arguments": [
-			// arguments to be passed to the program
-		]
+		"name": "one",
+		"type": "coroutine",
+		"directory": "./one",
+		"arguments": []
 	}
 ]

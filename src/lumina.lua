@@ -1,8 +1,9 @@
 -- uses LuaFileSystem and cqueues
+-- startup stuff
 do
-	function _err( str )
+	--[[function _err( str )
 		error( setmetatable( {}, {__tostring=function() return str end} ) )
-	end
+	end]] _err = error
 	local ok;
 	ok, cqueues = pcall( require, "cqueues" )
 	if not ok then
@@ -28,9 +29,17 @@ do
 	json = require( "lib.json" )
 	local t = json.decode( f:read( "*a" ) )
 	f:close()
+	items = {
+		coroutine = {},
+		program = {}
+	}
 	config = {}
 	function getconf(t)
 		for k, v in pairs( t ) do
+			if not items[v['type']] then
+				items[v['type']] = {}
+			end
+			items[v['type']][v['name']] = v
 			if v['type'] == "configuration" then
 				for _k, _v in pairs( v ) do
 					if type( _v ) == "table" then
@@ -57,12 +66,59 @@ do
 				if line:match( mkwc( v ) ) then
 					local f, err = io.open( line )
 					if not f then _err( err ) end
-					local t, err = json.decode( f:read( "*a" ) )
+					local t, _, err = json.decode( f:read( "*a" ) )
 					f:close()
 					if not t then _err( line .. ": " .. err ) end
 					getconf( t )
 				end
 			end
 		end
+	end
+end
+--
+for k, v in pairs( items['coroutine'] ) do
+	local found;
+	if not v.directory then
+		return _err( "Directory missing for coroutine " .. k )
+	end
+	for item in lfs.dir( v.directory ) do
+		if v.file or item:match( "main%.lua$" ) or item:match( "main%.srv$" ) or item:match( "main%.cli$" ) then
+			local f, err = loadfile( v.file or item )
+			if not f then
+				_err( err )
+				found = true
+			else
+				lumina:queue( f, k )
+				found = true
+			end
+		end
+	end
+	if not found then _err( "Missing file for coroutine " .. k ) end
+end
+-- start threads
+for k, v in pairs( items['program'] ) do
+	local found;
+	if not v.directory then
+		return _err( "Directory missing for thread " .. k )
+	end
+	for item in lfs.dir( v.directory ) do
+		if v.file or item:match( "main%.lua$" ) or item:match( "main%.srv$" ) or item:match( "main%.cli$" ) then
+			local f, err = loadfile( v.file or item )
+			if not f then
+				_err( err )
+				found = true
+			else
+				lumina:spawn( f, k )
+				found = true
+			end
+		end
+	end
+	if not found then _err( "Missing file for thread " .. k ) end
+end
+-- loop through coroutines
+while not lumina.queues:empty() do
+	local k, err = lumina.queues:step()
+	if not k then
+		print( "Error: " .. err )
 	end
 end

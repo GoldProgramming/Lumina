@@ -1,11 +1,11 @@
 [
 	{
-		"name": "config",
-		"type": "configuration", // configuration settings
+		"name": "config", // configuration settings
+		"type": "configuration",
 		"modified": false
 	},
 	{
-		"name": "includes",
+		"name": "includes", // include section - import additional setting files
 		"type": "configuration",
 		"include": [
 			"./*.json" // include JSON from any files that match
@@ -16,16 +16,18 @@
 		"name": "example1", // Program name for interface
 		"type": "program", // 'program'-types spawn a cqueues thread for separate execution
 		"directory": "./example", // Directory to chdir into before starting program
+		"file": null, // Optional if you don't have main.lua, main.srv, or main.cli
 		"arguments": [
-			// arguments to be passed to the program
+			"-o", // arguments to be passed to the program
 		]
 	},
 	{
 		"name": "example2", // Program name for interface
-		"type": "coroutine", // 'coroutine'-types are :wrap()ped without adding another thread
+		"type": "coroutine", // 'coroutine'-types are wrap()ped without adding another thread
 		"directory": ".", // current directory if you want
+		"file": "main.srv",
 		"arguments": [
-			// arguments to be passed to the program
+			"--target-directory ./" // arguments to be passed to the program
 		]
 	}
 ]
