@@ -61,7 +61,7 @@ do
 		local mkwc = require( "lib.mkwc" )
 		local getdir = require( "lib.getdir" )
 		for k, v in pairs( config.include ) do
-			local t = getdir()
+			local t = getdir( "." )
 			for _, line in pairs( t ) do
 				if line:match( mkwc( v ) ) then
 					local f, err = io.open( line )
@@ -75,7 +75,7 @@ do
 		end
 	end
 end
---
+-- start coroutines
 for k, v in pairs( items['coroutine'] ) do
 	local found;
 	if not v.directory then
@@ -83,7 +83,7 @@ for k, v in pairs( items['coroutine'] ) do
 	end
 	for item in lfs.dir( v.directory ) do
 		if v.file or item:match( "main%.lua$" ) or item:match( "main%.srv$" ) or item:match( "main%.cli$" ) then
-			local f, err = loadfile( v.file or item )
+			local f, err = loadfile( v.directory:match( "(.-)/?$" ) .. "/" .. ( v.file or item ) )
 			if not f then
 				_err( err )
 				found = true
@@ -103,7 +103,7 @@ for k, v in pairs( items['program'] ) do
 	end
 	for item in lfs.dir( v.directory ) do
 		if v.file or item:match( "main%.lua$" ) or item:match( "main%.srv$" ) or item:match( "main%.cli$" ) then
-			local f, err = loadfile( v.file or item )
+			local f, err = loadfile( v.directory:match( "(.-)/?$" ) .. "/" .. ( v.file or item ) )
 			if not f then
 				_err( err )
 				found = true
