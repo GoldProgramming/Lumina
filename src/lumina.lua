@@ -24,7 +24,7 @@ do
 		_err( "unable to locate config.json configuration file!" )
 	end
 	local f, err = io.open( "config.json" )
-	print( type((function()return not f and _err( err )end)) )
+	(function()return not f and _err( err )end)()
 	json = require( "lib.json" )
 	local t = json.decode( f:read( "*a" ) )
 	f:close()
