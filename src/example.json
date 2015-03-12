@@ -2,12 +2,14 @@
 	{
 		"name": "config",
 		"type": "configuration", // configuration settings
-		"modified": "false"
+		"modified": false
 	},
 	{
 		"name": "includes",
 		"type": "configuration",
-		"include": "./*.json" // include JSON from any files that match
+		"include": [
+			"./*.json" // include JSON from any files that match
+		]
 								 // any src/*.json files will be matched
 	},
 	{
