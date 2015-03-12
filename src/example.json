@@ -1,0 +1,29 @@
+[
+	{
+		"name": "config",
+		"type": "configuration", // configuration settings
+		"modified": "false"
+	},
+	{
+		"name": "includes",
+		"type": "configuration",
+		"include": "./*.json" // include JSON from any files that match
+								 // any src/*.json files will be matched
+	},
+	{
+		"name": "example1", // Program name for interface
+		"type": "program", // 'program'-types spawn a cqueues thread for separate execution
+		"directory": "./example", // Directory to chdir into before starting program
+		"arguments": [
+			// arguments to be passed to the program
+		]
+	},
+	{
+		"name": "example2", // Program name for interface
+		"type": "coroutine", // 'coroutine'-types are :wrap()ped without adding another thread
+		"directory": ".", // current directory if you want
+		"arguments": [
+			// arguments to be passed to the program
+		]
+	}
+]
