@@ -31,7 +31,7 @@ Documentation will be available not through the README, but in later posted docs
  > Lua is an embeddable language programmed in ANSI C which is used in lightweight server applications. [Website](http://lua.org/).
  * cqueues
  
- > cqueues (read: Conditional Queues) is a coroutine-based (see below) asyncio library for Lua, to help with servers and asynchronous execution. [Website](http://25thandclement.com/~william/projects/cqueues.html).
+ > cqueues (read: Continuation Queues) is a coroutine-based (see below) asyncio library for Lua, to help with servers and asynchronous execution. [Website](http://25thandclement.com/~william/projects/cqueues.html).
  * HTML & JavaScript
  
  > HTML and JavaScript are both used in the creation of web applications that can be loaded in programs such as Mozilla Firefox, Google Chrome, and (god forbid) Internet Explorer.
